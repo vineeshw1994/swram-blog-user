@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  user:
+    image: vineeshw1994/swarm-blog-user:latest
+    ports:
+      - "4001:4001"
+    env_file:
+      - .env
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: always
