@@ -1,10 +1,42 @@
-const mongoose = require('mongoose');
+// src/models/User.js
+const { DataTypes } = require('sequelize');
 
-const userSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  role: { type: String, enum: ['user', 'admin'], default: 'user' },
-});
+module.exports = (sequelize) => {
+  const User = sequelize.define(
+    'User',
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+      },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        validate: { isEmail: true },
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      role: {
+        type: DataTypes.ENUM('user', 'admin'),
+        defaultValue: 'user',
+      },
+    },
+    {
+      tableName: 'users',
+      timestamps: true,      // createdAt / updatedAt
+      hooks: {
+        // optional: you can hash password here instead of in controller
+      },
+    }
+  );
 
-module.exports = mongoose.model('User', userSchema);
+  return User;
+};

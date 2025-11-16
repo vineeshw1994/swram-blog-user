@@ -1,8 +1,10 @@
+// src/app.js
 const express = require('express');
-const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
+
 const authRoutes = require('./routes/auth');
+const { sequelize } = require('./db');
 
 const app = express();
 app.use(cookieParser());
@@ -10,10 +12,16 @@ app.use(express.json());
 
 app.use('/auth', authRoutes);
 
-const MONGO_URI = 'mongodb://host.docker.internal:27017/swram-blog-userdb';
-mongoose.connect(MONGO_URI)
-  .then(() => console.log('User DB connected'))
-  .catch(err => console.error(err));
+// health check
+app.get('/', (req, res) => res.send('User Service OK'));
 
-const PORT = 4001;
-app.listen(PORT, () => console.log(`User Service @ :${PORT}`));
+const PORT = process.env.PORT || 4001;
+app.listen(PORT, async () => {
+  console.log(`User Service @ :${PORT}`);
+  try {
+    await sequelize.authenticate();
+    console.log('MySQL connected via Sequelize');
+  } catch (e) {
+    console.error('MySQL connection error:', e);
+  }
+});
