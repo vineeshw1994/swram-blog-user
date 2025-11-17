@@ -15,6 +15,10 @@ app.use('/auth', authRoutes);
 // health check
 app.get('/', (req, res) => res.send('User Service OK'));
 
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', time: new Date() });
+});
+
 const PORT = process.env.PORT || 4001;
 app.listen(PORT, async () => {
   console.log(`User Service @ :${PORT}`);

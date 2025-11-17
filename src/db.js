@@ -18,6 +18,6 @@ const sequelize = new Sequelize(
 const User = require('./models/User')(sequelize);
 
 // Sync (creates table if missing – use only in dev or with migrations in prod)
-sequelize.sync({ alter: true }).catch((err) => console.error('Sequelize sync error:', err));
+// sequelize.sync({ alter: true }).catch((err) => console.error('Sequelize sync error:', err));
 
 module.exports = { sequelize, User };
