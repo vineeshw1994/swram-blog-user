@@ -4,10 +4,10 @@ require('dotenv').config();
 
 const sequelize = new Sequelize(
   process.env.MYSQL_DB || 'blogdb',
-  process.env.MYSQL_USER || 'bloguser',
-  process.env.MYSQL_PASSWORD || 'UserPass123!',
+  process.env.MYSQL_USER || 'root',
+  process.env.MYSQL_PASSWORD || 'Vineesh@123',
   {
-    host: process.env.MYSQL_HOST || 'mysql',
+    host: process.env.MYSQL_HOST || 'host.docker.internal',
     dialect: 'mysql',
     logging: process.env.NODE_ENV === 'development',
     pool: { 
